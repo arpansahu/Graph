@@ -1,7 +1,7 @@
-#include <queue>
+
 #include "iostream"
 #include "vector"
-#include "queue"
+
 
 using namespace std;
 
@@ -22,8 +22,8 @@ public:
             //     adjList[i.destination].push_back(i.source);
         }
     }
-    void BFSRecursivelyJoinandDisjointtGraphUtil(vector<bool> &discovered, queue<int> &q);
-    void BFSRecursivelyJointandDisjointGraph(int s);
+    void DFSRecurisvelyUtil(vector<bool> &discovered,int s);
+    void DFSRecurisvely(int s);
     void printGraph();
 
 
@@ -41,39 +41,21 @@ void Graph :: printGraph()
 }
 
 
-void Graph ::BFSRecursivelyJoinandDisjointtGraphUtil(vector<bool> &discovered, queue<int> &q) {
-    if (q.empty())
-        return;
-    int v = q.front();
-    q.pop();
-    cout << v <<" ";
-    for (int u : this->adjList[v])
-    {
-        if (!discovered[u])
-        {
-            discovered[u] = true;
-            q.push(u);
-        }
+void Graph ::DFSRecurisvelyUtil(vector<bool> &discovered,int s) {
+    discovered[s] = true;
+    cout << s <<" ";
+    for(auto i : this->adjList[s]){
+        if(discovered[i] == false) DFSRecurisvelyUtil(discovered,i);
     }
-    BFSRecursivelyJoinandDisjointtGraphUtil(discovered, q);
-
 }
 
-void Graph ::BFSRecursivelyJointandDisjointGraph(int s) {
+void Graph ::DFSRecurisvely(int s) {
     vector<bool> discovered(V, false);
-    queue<int> q;
-
-    for (int i = s; i < V; i++) {
-        if (discovered[i] == false)
-        {
-            discovered[i] = true;
-            q.push(i);
-            BFSRecursivelyJoinandDisjointtGraphUtil(discovered, q);
-        }
-    }
+    for (int i = s; i < V; i++) {if (discovered[i] == false) DFSRecurisvelyUtil(discovered,i);} //if we remove if then it will not work for disjoint graph
 }
 
 int main()
+
 {
 
     vector<Edge> edges =
@@ -84,7 +66,7 @@ int main()
     int V = 4;
     Graph graph(edges, V);
     //   graph.printGraph();
-    graph.BFSRecursivelyJointandDisjointGraph(2);
+    graph.DFSRecurisvely(2);
     cout << "\n";
 
 
@@ -92,10 +74,10 @@ int main()
 
     edges = {
             {0,4},{1,2},{1,3},{1,4},{2,3},{3,4}
-    };
+    }; // this is aa disjoint graph
 
     Graph graph2(edges,5);
 
-    graph2.BFSRecursivelyJointandDisjointGraph(0);
+    graph2.DFSRecurisvely(0);
     return 0;
 }
