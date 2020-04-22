@@ -1,4 +1,4 @@
-
+#include "set"
 #include "iostream"
 #include "vector"
 
@@ -74,10 +74,10 @@ public:
 
 void Graph :: printGraph()
 {
-    for (int i = 0; i < this->adjList.size(); i++)
+    for (int i = 0; i < adjList.size(); i++)
     {
         cout << i << " -- ";
-        for (int v : this->adjList[i])
+        for (int v : adjList[i])
             cout <<"->"<< v << " ";
         cout << endl;
     }
@@ -87,7 +87,7 @@ void Graph :: printGraph()
 void Graph ::types_OF_Edges_In_GraphUtil(vector<bool> &discovered,int s,vector<int> &arrival,vector<int> & departure ,int & time1,EdgeTypes &result ) {
     discovered[s] = true;
     arrival[s] = ++time1;
-    for(auto i : this->adjList[s]) {
+    for(auto i : adjList[s]) {
         if(discovered[i] == false) {
             types_OF_Edges_In_GraphUtil(discovered, i, arrival, departure, time1,result);
             result.tree_edge.push_back({s,i});   //tree edge
@@ -106,7 +106,7 @@ void Graph ::types_OF_Edges_In_Graph(int s) {
     vector<int > departure(V,-1);
     EdgeTypes result;
     int time = 0;
-    for (int i = s; i < V; i++) if (discovered[i] == false)    DFSRecurisvelyUtil(discovered, i, arrival, departure,time,result);
+    for (int i = s; i < V; i++) if (discovered[i] == false)    types_OF_Edges_In_GraphUtil(discovered, i, arrival, departure,time,result);
     //if we remove if then it will not work for disjoint graph
 
     for (int j = 0; j < V; ++j) {
@@ -130,7 +130,9 @@ int main()
     vector<Edge> edges1 ={   {1 , 2}, {1, 3}, {2, 4}, {3, 5}, {4, 6}, {5, 7},
                              {5, 8}, {5, 4} ,{6,2} ,{1,8}
     };
-    int V = edges.size();
+    set <int > setsize;
+    for(auto  i : edges){ setsize.insert(i.source);setsize.insert(i.destination);}
+    int V = setsize.size();
     Graph graph(edges, V);
     graph.types_OF_Edges_In_Graph(0);
     return 0;
