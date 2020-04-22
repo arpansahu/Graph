@@ -69,7 +69,7 @@ int main()
                             {4, 5}, {6, 7}
     };
 
-    int V = edges.size();
+    int V = 8;
     Graph graph(edges, V);
     graph.Arrival_and_Departure_Time_of_Vertices_in_DFS(0);
     return 0;
