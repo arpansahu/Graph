@@ -19,7 +19,7 @@ public:
         adjList.resize(V);
         for(auto i : edges){
             adjList[i.source].push_back(i.destination);
-            //     adjList[i.destination].push_back(i.source);
+            adjList[i.destination].push_back(i.source);
         }
     }
     void DFSRecurisvelyUtil(vector<bool> &discovered, int s, vector<char> &color, char colorParent, bool &cond);
@@ -42,10 +42,9 @@ void Graph :: printGraph()
 
 
 void Graph ::DFSRecurisvelyUtil(vector<bool> &discovered, int s, vector<char> &color, char colorParent, bool &cond) {
-
-    discovered[s] = true;
-    if(color[s] == 'N') color[s] = (colorParent == 'B') ? 'R' : 'B';
     for(auto i : adjList[s]){
+        discovered[s] = true;
+        if(color[s] == 'N') color[s] = (colorParent == 'B') ? 'R' : 'B';
         if(discovered[i] == false) DFSRecurisvelyUtil(discovered, i, color, color[s], cond);
         else if(color[i] == color[s] ) {  cond = false; return ;}
     }
@@ -56,7 +55,7 @@ void Graph ::Bipartite() {
     vector<char> color(V,'N');
     bool cond = true;
     for (int i = 0; i < V; i++) {if (discovered[i] == false && cond == true) DFSRecurisvelyUtil(discovered, i, color, 'B', cond);} //if we remove if then it will not work for disjoint graph
-    (cond == true) ? cout << "Bipartite Graph  " :cout <<"Not a Bipartite Graph  \n";
+    (cond == true) ? cout << "Bipartite Graph \n" :cout <<"Not a Bipartite Graph  \n";
 }
 
 int main()
