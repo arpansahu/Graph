@@ -1,7 +1,7 @@
 
 #include "iostream"
 #include "vector"
-
+#include "set"
 
 using namespace std;
 
@@ -31,10 +31,10 @@ public:
 
 void Graph :: printGraph()
 {
-    for (int i = 0; i < this->adjList.size(); i++)
+    for (int i = 0; i < adjList.size(); i++)
     {
         cout << i << " -- ";
-        for (int v : this->adjList[i])
+        for (int v : adjList[i])
             cout <<"->"<< v << " ";
         cout << endl;
     }
@@ -44,7 +44,7 @@ void Graph :: printGraph()
 void Graph ::DFSRecurisvelyUtil(vector<bool> &discovered,int s,vector<int> &arrival,vector<int> & departure ,int & time1) {
     discovered[s] = true;
     arrival[s] = ++time1;
-    for(auto i : this->adjList[s])  if(discovered[i] == false) DFSRecurisvelyUtil(discovered, i, arrival, departure, time1);
+    for(auto i : adjList[s])  if(discovered[i] == false) DFSRecurisvelyUtil(discovered, i, arrival, departure, time1);
     departure[s] = ++time1;
 }
 
@@ -69,7 +69,9 @@ int main()
                             {4, 5}, {6, 7}
     };
 
-    int V = 8;
+    set <int > setsize;
+    for(auto  i : edges){ setsize.insert(i.source);setsize.insert(i.destination);}
+    int V = setsize.size();
     Graph graph(edges, V);
     graph.Arrival_and_Departure_Time_of_Vertices_in_DFS(0);
     return 0;
