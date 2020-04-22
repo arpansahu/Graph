@@ -1,7 +1,8 @@
-#include <queue>
+#include "set"
 #include "iostream"
 #include "vector"
-#include "set"
+
+
 using namespace std;
 
 struct Edge {
@@ -18,12 +19,14 @@ public:
         adjList.resize(V);
         for(auto i : edges){
             adjList[i.source].push_back(i.destination);
-            adjList[i.destination].push_back(i.source);
+            //     adjList[i.destination].push_back(i.source);
         }
     }
-    void  Bipartite();
+    void DFSRecurisvelyUtil(vector<bool> &discovered, int s, vector<char> &color, char colorParent, bool &cond);
+    void Bipartite();
     void printGraph();
-    void Bipartiteutility(vector<char> &discovered, int i, bool &cond);
+
+
 };
 
 void Graph :: printGraph()
@@ -35,36 +38,29 @@ void Graph :: printGraph()
             cout <<"->"<< v << " ";
         cout << endl;
     }
-    cout <<"\n";
 }
 
 
-void Graph ::Bipartiteutility(vector<char> &discovered, int i, bool &cond) {
-    queue <int> q;
-    q.push(i);
-    discovered[i] = 'R';
-    while(!q.empty())
-    {
-        i = q.front();    q.pop();  //cout << s<<" " ;
-        for (auto  j : adjList[i]) {
-            if(discovered[j] == NULL){
-                discovered[j] = (discovered[i] == 'R') ? 'B' : 'R';
-                q.push(j);
-            }
-            else if (discovered[i] == discovered[j]){ cond = false ;return;}
-        }
+void Graph ::DFSRecurisvelyUtil(vector<bool> &discovered, int s, vector<char> &color, char colorParent, bool &cond) {
+
+    discovered[s] = true;
+    if(color[s] == 'N') color[s] = (colorParent == 'B') ? 'R' : 'B';
+    for(auto i : adjList[s]){
+        if(discovered[i] == false) DFSRecurisvelyUtil(discovered, i, color, color[s], cond);
+        else if(color[i] == color[s] ) {  cond = false; return ;}
     }
-
 }
 
-void Graph :: Bipartite(){
+void Graph ::Bipartite() {
+    vector<bool> discovered(V, false);
+    vector<char> color(V,'N');
     bool cond = true;
-    vector <char> colored(V, NULL);
-    for(int i = 0; i <  V ; i++)   if(colored[i] == NULL && cond == true) Bipartiteutility(colored, i, cond);
-    (cond == true) ? cout << "Bipartite Graph  \n" :cout <<"Not a Bipartite Graph  \n";
+    for (int i = 0; i < V; i++) {if (discovered[i] == false && cond == true) DFSRecurisvelyUtil(discovered, i, color, 'B', cond);} //if we remove if then it will not work for disjoint graph
+    (cond == true) ? cout << "Bipartite Graph  " :cout <<"Not a Bipartite Graph  \n";
 }
 
 int main()
+
 {
 
     vector<Edge> edges =
