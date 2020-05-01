@@ -1,4 +1,4 @@
-
+#include "algorithm"
 #include "iostream"
 #include "vector"
 #include "set"
@@ -19,10 +19,10 @@ public:
         adjList.resize(V);
         for(auto i : edges){
             adjList[i.source].push_back(i.destination);
-            //     adjList[i.destination].push_back(i.source);
+            // adjList[i.destination].push_back(i.source);
         }
     }
-    void DFSRecurisvelyUtil(vector<bool> &discovered, int s, vector<int> &departure, int &time, map<int, int ,greater<int>> & map1);
+    void DFSRecurisvelyUtil(vector<bool> &discovered, int s, vector<int> &departure, int &time);
     void TopologicalSrotUsing_Arrival_and_Departure_Time_of_Vertices_in_DFS(int s);
     void printGraph();
 
@@ -41,21 +41,21 @@ void Graph :: printGraph()
 }
 
 
-void Graph ::DFSRecurisvelyUtil(vector<bool> &discovered,int s,vector<int> & departure ,int & time1, map<int, int ,greater<int>> &map1) {
+void Graph ::DFSRecurisvelyUtil(vector<bool> &discovered,int s,vector<int> & departure ,int & time1) {
     discovered[s] = true;
-    ++time1;
-    for(auto i : adjList[s])  if(discovered[i] == false) DFSRecurisvelyUtil(discovered, i,  departure, time1,map1);
-    departure[s] = ++time1;
-    map1[departure[s]] = s;
+    for(auto i : adjList[s])  if(discovered[i] == false) DFSRecurisvelyUtil(discovered, i,  departure, time1);
+    departure[time1] = s;
+    time1++;
+
 }
 
 void Graph ::TopologicalSrotUsing_Arrival_and_Departure_Time_of_Vertices_in_DFS(int s) {
     vector<bool> discovered(V, false);
-    map<int, int ,greater<int>> map1;
     vector<int > departure(V,-1);
-    int time = -1;
-    for (int i = s; i < V; i++) if (discovered[i] == false)    DFSRecurisvelyUtil(discovered, i, departure,time,map1);
-    for(auto i : map1) cout <<i.second<<" ";
+    int time = 0;
+    for (int i = s; i < V; i++) if (discovered[i] == false)    DFSRecurisvelyUtil(discovered, i, departure,time);
+    reverse(departure.begin(),departure.end());
+    for(auto i : departure) cout <<i<<" ";
 }
 
 int main()
