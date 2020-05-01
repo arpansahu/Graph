@@ -19,7 +19,7 @@ void printPath(int predecessor[][V], int i, int j)
 }
 
 
-void  FloydWarshell_Algorithm_Single_Source_Shortest_Path(int adjMatrix[V][V]){
+void  FloydWarshell_Algorithm_All_Source_Shortest_Path(int adjMatrix[V][V]){
     int distance[V][V],predecessor[V][V];
     //initialising distance and predecessor
     for(auto i = 0 ;i < V; i++){
@@ -84,7 +84,7 @@ int main(){
                     { INT_MAX,      -1, INT_MAX,       0 }
             };
 
-    FloydWarshell_Algorithm_Single_Source_Shortest_Path(adjMatrix);
+    FloydWarshell_Algorithm_All_Source_Shortest_Path(adjMatrix);
 
     return 0;
 
