@@ -16,6 +16,8 @@ public:
             adjList[i.destination].push_back(i.source);
         }
     }
+
+
 };
 
 void printGraph(Graph graph)
@@ -38,6 +40,7 @@ int main()
             };
 
     int N = 6;
+
     Graph graph(edges, N);
     printGraph(graph);
 
